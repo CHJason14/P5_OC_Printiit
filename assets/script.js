@@ -1,4 +1,4 @@
-const $slides = [
+const slides = [
 	{
 		"image":"slide1.jpg",
 		"tagLine":"Impressions tous formats <span>en boutique et en ligne</span>"
@@ -17,34 +17,42 @@ const $slides = [
 	}
 ]
 
+let sizeSlide = slides.length;
+let arraySlide = sizeSlide - 1;
 const buttons = document.querySelectorAll(".arrow");
-var slide = document.querySelector(".banner-img");
-var src = slide.getAttribute("src");
-var alt = slide.getAttribute("alt");
-var slideActive = 0;
-const dots = document.querySelectorAll(".dot");
-const $dots = [...dots];
-
+let slide = document.querySelector(".banner-img");
+let src = slide.getAttribute("src");
+let alt = slide.getAttribute("alt");
+let slideActive = 0;
+const breakpoint = document.querySelectorAll(".dot");
+const dots = [...breakpoint];
 
 
 buttons.forEach((button) => {
 	button.addEventListener("click", (e) => {
 		const calcNextSlide = e.target.id === "next" ? 1 : -1;
 		slideActive = slideActive + calcNextSlide;
-		var pastSlide = slideActive - 1;
+		let pastSlide = slideActive - 1;
+		let nextSlide = slideActive + 1;
 		if (slideActive < 0) {
-			slideActive = 3;
+			slideActive = arraySlide;
 		};
-		if (slideActive > 3) {
+		if (slideActive > arraySlide) {
 			slideActive = 0;
 		};
-		var imageActive = $slides[slideActive].image;
-		alt = $slides[slideActive].tagLine;
+		let imageActive = slides[slideActive].image;
+		alt = slides[slideActive].tagLine;
 		src = "./assets/images/slideshow/" + imageActive;
 		slide.src = src;
 		slide.alt = alt;
-		console.log(pastSlide);
-		$dots[pastSlide].classList.remove("dot_selected");
-		$dots[slideActive].classList.add("dot_selected");
+		if (e.target.id === "next") {
+			dots[pastSlide].classList.remove("dot_selected");
+			dots[slideActive].classList.add("dot_selected");
+		}
+		else 
+		{
+			dots[nextSlide].classList.remove("dot_selected");
+			dots[slideActive].classList.add("dot_selected");
+		};
 	});
 });
