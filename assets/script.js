@@ -17,42 +17,19 @@ const slides = [
 	}
 ]
 
-let sizeSlide = slides.length;
-let arraySlide = sizeSlide - 1;
 const buttons = document.querySelectorAll(".arrow");
 let slide = document.querySelector(".banner-img");
-let src = slide.getAttribute("src");
-let alt = slide.getAttribute("alt");
+
 let slideActive = 0;
-const breakpoint = document.querySelectorAll(".dot");
-const dots = [...breakpoint];
+const dots = [...document.querySelectorAll(".dot")];
 
-
-buttons.forEach((button) => {
-	button.addEventListener("click", (e) => {
-		const calcNextSlide = e.target.id === "next" ? 1 : -1;
-		slideActive = slideActive + calcNextSlide;
-		let pastSlide = slideActive - 1;
-		let nextSlide = slideActive + 1;
-		if (slideActive < 0) {
-			slideActive = arraySlide;
-		};
-		if (slideActive > arraySlide) {
-			slideActive = 0;
-		};
-		let imageActive = slides[slideActive].image;
-		alt = slides[slideActive].tagLine;
-		src = "./assets/images/slideshow/" + imageActive;
-		slide.src = src;
-		slide.alt = alt;
-		if (e.target.id === "next") {
-			dots[pastSlide].classList.remove("dot_selected");
-			dots[slideActive].classList.add("dot_selected");
-		}
-		else 
-		{
-			dots[nextSlide].classList.remove("dot_selected");
-			dots[slideActive].classList.add("dot_selected");
-		};
-	});
+buttons.forEach(button => {
+    button.addEventListener("click", (e) => {
+        slideActive += (e.target.id === "next" ? 1 : -1);
+        slideActive = (slideActive + slides.length) % slides.length;
+        slide.src = `./assets/images/slideshow/${slides[slideActive].image}`;
+        slide.alt = slides[slideActive].tagLine;
+        dots.forEach(dot => dot.classList.remove("dot_selected"));
+        dots[slideActive].classList.add("dot_selected");
+    });
 });
